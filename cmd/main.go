@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/juanignaciorc/microbloggin-pltf/cmd/api"
+)
 
 func main() {
-	fmt.Printf("hello, world\n")
+	router := api.SetupEngine()
+	api.StartServer(router)
 }
