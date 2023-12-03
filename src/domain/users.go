@@ -5,10 +5,11 @@ import (
 )
 
 type User struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Followers []int  `json:"followers"`
+	ID        int     `json:"id"`
+	Name      string  `json:"name"`
+	Email     string  `json:"email"`
+	Followers []int   `json:"followers"`
+	Tweets    []Tweet `json:"tweets"`
 }
 
 func NewUser(name, email string) User {

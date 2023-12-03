@@ -17,6 +17,10 @@ type CreateUserBody struct {
 	Email string `json:"email"`
 }
 
+type CreateTweetBody struct {
+	Message string `json:"message"`
+}
+
 func NewUserHandler(service services.UserService) *UserHandler {
 	return &UserHandler{
 		service: service,
@@ -55,4 +59,28 @@ func (h *UserHandler) Get(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"user": user})
+}
+
+func (h *UserHandler) CreateTweet(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	var body CreateTweetBody
+	if err := ctx.ShouldBindJSON(&body); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	tweet, err := h.service.CreateTweet(userID, body.Message)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Tweet created successfully", "tweet": tweet})
 }
