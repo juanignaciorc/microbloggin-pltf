@@ -15,11 +15,20 @@ func NewUserService(userRepository ports.UsersRepository) UserService {
 	}
 }
 
-func (s *UserService) CreateUser(name, mail string) error {
+func (s *UserService) CreateUser(name, mail string) (domain.User, error) {
 	user := domain.NewUser(name, mail)
-	if err := s.userRepository.CreateUser(user); err != nil {
-		return err
+	if _, err := s.userRepository.CreateUser(user); err != nil {
+		return domain.User{}, err
 	}
 
-	return nil
+	return user, nil
+}
+
+func (s *UserService) GetUser(id int) (domain.User, error) {
+	user, err := s.userRepository.GetUser(id)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	return user, nil
 }

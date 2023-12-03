@@ -24,6 +24,7 @@ func SetupEngine() *gin.Engine {
 		})
 	})
 	router.POST(basePath+"/users", userHandler.Create)
+	router.GET(basePath+"/users/:id", userHandler.Get)
 
 	return router
 }

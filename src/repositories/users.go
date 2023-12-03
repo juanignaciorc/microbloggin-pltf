@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/juanignaciorc/microbloggin-pltf/src/domain"
 )
@@ -16,12 +17,29 @@ func NewInMemoryDB() *InMemoryDB {
 	}
 }
 
-func (db *InMemoryDB) CreateUser(user domain.User) error {
+func (db *InMemoryDB) CreateUser(user domain.User) (domain.User, error) {
 	userBytes, err := json.Marshal(user)
 	if err != nil {
-		return err
+		return domain.User{}, err
 	}
 
 	db.data[user.ID] = userBytes
-	return nil
+	var createdUser domain.User
+	err = json.Unmarshal(userBytes, &createdUser)
+	return createdUser, err
+}
+
+func (db *InMemoryDB) GetUser(id int) (domain.User, error) {
+	userBytes, ok := db.data[id]
+	if !ok {
+		return domain.User{}, fmt.Errorf("user with id %d not found", id)
+	}
+
+	var user domain.User
+	err := json.Unmarshal(userBytes, &user)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	return user, nil
 }
