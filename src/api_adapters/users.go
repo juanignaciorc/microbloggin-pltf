@@ -84,3 +84,28 @@ func (h *UserHandler) CreateTweet(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Tweet created successfully", "tweet": tweet})
 }
+
+func (h *UserHandler) FollowUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	followedID := ctx.Param("followed_id")
+
+	followedUserID, err := strconv.Atoi(followedID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid followed user ID"})
+		return
+	}
+
+	if err := h.service.FollowUser(userID, followedUserID); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User followed successfully"})
+}

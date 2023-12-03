@@ -9,6 +9,7 @@ type User struct {
 	Name      string  `json:"name"`
 	Email     string  `json:"email"`
 	Followers []int   `json:"followers"`
+	Followeds []int   `json:"followeds"`
 	Tweets    []Tweet `json:"tweets"`
 }
 

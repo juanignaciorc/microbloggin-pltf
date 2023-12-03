@@ -41,3 +41,11 @@ func (s *UserService) CreateTweet(userID int, message string) (domain.Tweet, err
 
 	return tweet, nil
 }
+
+func (s *UserService) FollowUser(userID, followedID int) error {
+	if err := s.userRepository.FollowUser(userID, followedID); err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -62,3 +62,33 @@ func (db *InMemoryDB) CreateTweet(tweet domain.Tweet) (domain.Tweet, error) {
 
 	return tweet, nil
 }
+
+func (db *InMemoryDB) FollowUser(userID, followedID int) error {
+	user, err := db.GetUser(userID)
+	if err != nil {
+		return err
+	}
+
+	followedUser, err := db.GetUser(followedID)
+	if err != nil {
+		return err
+	}
+
+	followedUser.Followers = append(user.Followers, userID)
+	user.Followeds = append(user.Followeds, followedID)
+
+	userBytes, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
+
+	followedUserBytes, err := json.Marshal(followedUser)
+	if err != nil {
+		return err
+	}
+
+	db.data[userID] = userBytes
+	db.data[followedID] = followedUserBytes
+
+	return nil
+}
