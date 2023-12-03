@@ -5,7 +5,7 @@ import "math/rand"
 type Tweet struct {
 	ID      int    `json:"id"`
 	UserID  int    `json:"user_id"`
-	Message string `json:"message" validate:"max=140"`
+	Message string `json:"message" validate:"max=280"`
 }
 
 func NewTweet(userID int, message string) Tweet {

@@ -18,7 +18,7 @@ type CreateUserBody struct {
 }
 
 type CreateTweetBody struct {
-	Message string `json:"message"`
+	Message string `json:"message" binding:"required,max=280"`
 }
 
 func NewUserHandler(service services.UserService) *UserHandler {
