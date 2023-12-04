@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	handlers "github.com/juanignaciorc/microbloggin-pltf/src/api_adapters"
-	"github.com/juanignaciorc/microbloggin-pltf/src/repositories"
-	"github.com/juanignaciorc/microbloggin-pltf/src/services"
+	handlers "github.com/juanignaciorc/microbloggin-pltf/internal/api_adapters"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/repositories"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
 )
 
 const basePath = "/api/v1"

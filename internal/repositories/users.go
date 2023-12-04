@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/juanignaciorc/microbloggin-pltf/src/domain"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 )
 
 type InMemoryDB struct {

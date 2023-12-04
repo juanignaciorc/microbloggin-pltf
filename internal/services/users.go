@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/juanignaciorc/microbloggin-pltf/src/domain"
-	"github.com/juanignaciorc/microbloggin-pltf/src/ports"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/ports"
 )
 
 type UserService struct {

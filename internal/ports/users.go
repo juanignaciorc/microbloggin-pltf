@@ -1,6 +1,6 @@
 package ports
 
-import "github.com/juanignaciorc/microbloggin-pltf/src/domain"
+import "github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 
 type UsersRepository interface {
 	CreateUser(user domain.User) (domain.User, error)

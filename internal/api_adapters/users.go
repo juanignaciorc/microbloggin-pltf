@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juanignaciorc/microbloggin-pltf/src/services"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
 )
 
 type UserHandler struct {

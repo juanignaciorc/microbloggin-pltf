@@ -1,4 +1,4 @@
-# microbloggin-pltf
+# Microblogging-pltf
 
 ## Instrucciones para levantar el proyecto
 
