@@ -33,15 +33,6 @@ func (s *UserService) GetUser(id int) (domain.User, error) {
 	return user, nil
 }
 
-func (s *UserService) CreateTweet(userID int, message string) (domain.Tweet, error) {
-	tweet := domain.NewTweet(userID, message)
-	if _, err := s.userRepository.CreateTweet(tweet); err != nil {
-		return domain.Tweet{}, err
-	}
-
-	return tweet, nil
-}
-
 func (s *UserService) FollowUser(userID, followedID int) error {
 	if err := s.userRepository.FollowUser(userID, followedID); err != nil {
 		return err
