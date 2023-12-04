@@ -56,7 +56,7 @@ func (db *InMemoryDB) FollowUser(userID, followedID int) error {
 	}
 
 	followedUser.Followers = append(user.Followers, userID)
-	user.Followeds = append(user.Followeds, followedID)
+	user.Follwing = append(user.Follwing, followedID)
 
 	userBytes, err := json.Marshal(user)
 	if err != nil {
@@ -99,5 +99,5 @@ func (db *InMemoryDB) GetFollowedUsers(userID int) ([]int, error) {
 		return nil, err
 	}
 
-	return user.Followeds, nil
+	return user.Follwing, nil
 }

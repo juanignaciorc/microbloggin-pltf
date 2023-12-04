@@ -70,7 +70,7 @@ func (h *UserHandler) FollowUser(ctx *gin.Context) {
 		return
 	}
 
-	followedID := ctx.Param("followed_id")
+	followedID := ctx.Param("following_user_id")
 
 	followedUserID, err := strconv.Atoi(followedID)
 	if err != nil {
