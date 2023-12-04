@@ -92,3 +92,31 @@ func (db *InMemoryDB) FollowUser(userID, followedID int) error {
 
 	return nil
 }
+
+func (db *InMemoryDB) GetUserTimeline(userID int) ([]domain.Tweet, error) {
+	followedUsers, err := db.GetFollowedUsers(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var userTimeline []domain.Tweet
+	for _, followedID := range followedUsers {
+		user, err := db.GetUser(followedID)
+		if err != nil {
+			return nil, err
+		}
+
+		userTimeline = append(userTimeline, user.Tweets...)
+	}
+
+	return userTimeline, nil
+}
+
+func (db *InMemoryDB) GetFollowedUsers(userID int) ([]int, error) {
+	user, err := db.GetUser(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return user.Followeds, nil
+}

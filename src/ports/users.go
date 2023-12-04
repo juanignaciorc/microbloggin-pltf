@@ -7,6 +7,7 @@ type UsersRepository interface {
 	GetUser(id int) (domain.User, error)
 	CreateTweet(tweet domain.Tweet) (domain.Tweet, error)
 	FollowUser(userID, followedID int) error
+	GetUserTimeline(userID int) ([]domain.Tweet, error)
 }
 
 type UserService interface {
@@ -14,4 +15,5 @@ type UserService interface {
 	GetUser(id int) (domain.User, error)
 	CreateTweet(userID int, message string) (domain.Tweet, error)
 	FollowUser(userID, followedID int) error
+	GetUserTimeline(userID int) ([]domain.Tweet, error)
 }

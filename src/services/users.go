@@ -49,3 +49,12 @@ func (s *UserService) FollowUser(userID, followedID int) error {
 
 	return nil
 }
+
+func (s *UserService) GetUserTimeline(userID int) ([]domain.Tweet, error) {
+	tweets, err := s.userRepository.GetUserTimeline(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return tweets, nil
+}

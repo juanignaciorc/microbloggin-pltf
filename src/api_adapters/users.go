@@ -109,3 +109,21 @@ func (h *UserHandler) FollowUser(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "User followed successfully"})
 }
+
+func (h *UserHandler) GetUserTimeline(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	tweets, err := h.service.GetUserTimeline(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"tweets": tweets})
+}

@@ -16,7 +16,7 @@ func SetupEngine() *gin.Engine {
 	db := repositories.NewInMemoryDB()
 	userService := services.NewUserService(db)
 	userHandler := handlers.NewUserHandler(userService)
-
+	// followeds cambiar por following
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -27,6 +27,7 @@ func SetupEngine() *gin.Engine {
 	router.GET(basePath+"/users/:id", userHandler.Get)
 	router.POST(basePath+"/users/:id/tweet", userHandler.CreateTweet)
 	router.POST(basePath+"/users/:id/follow/:followed_id", userHandler.FollowUser)
+	router.GET(basePath+"/users/:id/timeline", userHandler.GetUserTimeline)
 
 	return router
 }
