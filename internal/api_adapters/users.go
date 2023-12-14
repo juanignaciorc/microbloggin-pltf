@@ -1,11 +1,10 @@
 package handlers
 
 import (
-	"net/http"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
+	"net/http"
 )
 
 type UserHandler struct {
@@ -44,9 +43,9 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 }
 
 func (h *UserHandler) Get(ctx *gin.Context) {
-	id := ctx.Param("id")
+	userID := ctx.Param("id")
 
-	userID, err := strconv.Atoi(id)
+	err := uuid.Validate(userID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
@@ -62,17 +61,17 @@ func (h *UserHandler) Get(ctx *gin.Context) {
 }
 
 func (h *UserHandler) FollowUser(ctx *gin.Context) {
-	id := ctx.Param("id")
+	userID := ctx.Param("id")
 
-	userID, err := strconv.Atoi(id)
+	err := uuid.Validate(userID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
 	}
 
-	followedID := ctx.Param("following_user_id")
+	followedUserID := ctx.Param("following_user_id")
 
-	followedUserID, err := strconv.Atoi(followedID)
+	err = uuid.Validate(followedUserID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid followed user ID"})
 		return
@@ -87,9 +86,9 @@ func (h *UserHandler) FollowUser(ctx *gin.Context) {
 }
 
 func (h *UserHandler) GetUserTimeline(ctx *gin.Context) {
-	id := ctx.Param("id")
+	userID := ctx.Param("id")
 
-	userID, err := strconv.Atoi(id)
+	err := uuid.Validate(userID)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return

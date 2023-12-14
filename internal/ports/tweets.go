@@ -7,5 +7,5 @@ type TweetRepository interface {
 }
 
 type TweetService interface {
-	CreateTweet(userID int, message string) (domain.Tweet, error)
+	CreateTweet(userID string, message string) (domain.Tweet, error)
 }

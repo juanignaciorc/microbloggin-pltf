@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
 	"net/http"
-	"strconv"
 )
 
 type TweetHandler struct {
@@ -19,8 +19,8 @@ func NewTweetHandler(service services.TweetsService) *TweetHandler {
 
 func (h *TweetHandler) CreateTweet(ctx *gin.Context) {
 	id := ctx.Param("id")
+	err := uuid.Validate(id)
 
-	userID, err := strconv.Atoi(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 		return
@@ -32,7 +32,7 @@ func (h *TweetHandler) CreateTweet(ctx *gin.Context) {
 		return
 	}
 
-	tweet, err := h.service.CreateTweet(userID, body.Message)
+	tweet, err := h.service.CreateTweet(id, body.Message)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -3,36 +3,41 @@ package repositories
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 )
 
 type InMemoryDB struct {
-	data map[int][]byte
+	data map[string][]byte
 }
 
 func NewInMemoryDB() *InMemoryDB {
 	return &InMemoryDB{
-		data: make(map[int][]byte),
+		data: make(map[string][]byte),
 	}
 }
 
 func (db *InMemoryDB) CreateUser(user domain.User) (domain.User, error) {
+	id := uuid.NewString()
+	user.ID = id
+
 	userBytes, err := json.Marshal(user)
 	if err != nil {
 		return domain.User{}, err
 	}
 
 	db.data[user.ID] = userBytes
+
 	var createdUser domain.User
 	err = json.Unmarshal(userBytes, &createdUser)
 	return createdUser, err
 }
 
-func (db *InMemoryDB) GetUser(id int) (domain.User, error) {
+func (db *InMemoryDB) GetUser(id string) (domain.User, error) {
 	userBytes, ok := db.data[id]
 	if !ok {
-		return domain.User{}, fmt.Errorf("user with id %d not found", id)
+		return domain.User{}, fmt.Errorf("user with id %v not found", id)
 	}
 
 	var user domain.User
@@ -44,7 +49,7 @@ func (db *InMemoryDB) GetUser(id int) (domain.User, error) {
 	return user, nil
 }
 
-func (db *InMemoryDB) FollowUser(userID, followedID int) error {
+func (db *InMemoryDB) FollowUser(userID string, followedID string) error {
 	user, err := db.GetUser(userID)
 	if err != nil {
 		return err
@@ -74,7 +79,7 @@ func (db *InMemoryDB) FollowUser(userID, followedID int) error {
 	return nil
 }
 
-func (db *InMemoryDB) GetUserTimeline(userID int) ([]domain.Tweet, error) {
+func (db *InMemoryDB) GetUserTimeline(userID string) ([]domain.Tweet, error) {
 	followedUsers, err := db.GetFollowedUsers(userID)
 	if err != nil {
 		return nil, err
@@ -93,7 +98,7 @@ func (db *InMemoryDB) GetUserTimeline(userID int) ([]domain.Tweet, error) {
 	return userTimeline, nil
 }
 
-func (db *InMemoryDB) GetFollowedUsers(userID int) ([]int, error) {
+func (db *InMemoryDB) GetFollowedUsers(userID string) ([]string, error) {
 	user, err := db.GetUser(userID)
 	if err != nil {
 		return nil, err

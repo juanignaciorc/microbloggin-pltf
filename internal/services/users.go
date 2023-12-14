@@ -16,15 +16,20 @@ func NewUserService(userRepository ports.UsersRepository) UserService {
 }
 
 func (s *UserService) CreateUser(name, mail string) (domain.User, error) {
-	user := domain.NewUser(name, mail)
-	if _, err := s.userRepository.CreateUser(user); err != nil {
+	user := domain.User{
+		Name:  name,
+		Email: mail,
+	}
+
+	createdUser, err := s.userRepository.CreateUser(user)
+	if err != nil {
 		return domain.User{}, err
 	}
 
-	return user, nil
+	return createdUser, nil
 }
 
-func (s *UserService) GetUser(id int) (domain.User, error) {
+func (s *UserService) GetUser(id string) (domain.User, error) {
 	user, err := s.userRepository.GetUser(id)
 	if err != nil {
 		return domain.User{}, err
@@ -33,7 +38,7 @@ func (s *UserService) GetUser(id int) (domain.User, error) {
 	return user, nil
 }
 
-func (s *UserService) FollowUser(userID, followedID int) error {
+func (s *UserService) FollowUser(userID, followedID string) error {
 	if err := s.userRepository.FollowUser(userID, followedID); err != nil {
 		return err
 	}
@@ -41,7 +46,7 @@ func (s *UserService) FollowUser(userID, followedID int) error {
 	return nil
 }
 
-func (s *UserService) GetUserTimeline(userID int) ([]domain.Tweet, error) {
+func (s *UserService) GetUserTimeline(userID string) ([]domain.Tweet, error) {
 	tweets, err := s.userRepository.GetUserTimeline(userID)
 	if err != nil {
 		return nil, err
