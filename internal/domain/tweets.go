@@ -1,7 +1,9 @@
 package domain
 
+import "github.com/google/uuid"
+
 type Tweet struct {
-	ID      string `json:"id"`
-	UserID  string `json:"user_id"`
-	Message string `json:"message" validate:"max=280"`
+	ID      uuid.UUID `json:"id"`
+	UserID  uuid.UUID `json:"user_id"`
+	Message string    `json:"message" validate:"max=280"`
 }

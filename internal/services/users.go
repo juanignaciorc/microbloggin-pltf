@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/ports"
 )
@@ -15,13 +17,13 @@ func NewUserService(userRepository ports.UsersRepository) UserService {
 	}
 }
 
-func (s *UserService) CreateUser(name, mail string) (domain.User, error) {
+func (s *UserService) CreateUser(ctx context.Context, name, mail string) (domain.User, error) {
 	user := domain.User{
 		Name:  name,
 		Email: mail,
 	}
 
-	createdUser, err := s.userRepository.CreateUser(user)
+	createdUser, err := s.userRepository.CreateUser(ctx, user)
 	if err != nil {
 		return domain.User{}, err
 	}
@@ -29,8 +31,8 @@ func (s *UserService) CreateUser(name, mail string) (domain.User, error) {
 	return createdUser, nil
 }
 
-func (s *UserService) GetUser(id string) (domain.User, error) {
-	user, err := s.userRepository.GetUser(id)
+func (s *UserService) GetUser(ctx context.Context, id uuid.UUID) (domain.User, error) {
+	user, err := s.userRepository.GetUser(ctx, id)
 	if err != nil {
 		return domain.User{}, err
 	}
@@ -38,16 +40,16 @@ func (s *UserService) GetUser(id string) (domain.User, error) {
 	return user, nil
 }
 
-func (s *UserService) FollowUser(userID, followedID string) error {
-	if err := s.userRepository.FollowUser(userID, followedID); err != nil {
+func (s *UserService) FollowUser(ctx context.Context, userID, followedID uuid.UUID) error {
+	if err := s.userRepository.FollowUser(ctx, userID, followedID); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *UserService) GetUserTimeline(userID string) ([]domain.Tweet, error) {
-	tweets, err := s.userRepository.GetUserTimeline(userID)
+func (s *UserService) GetUserTimeline(ctx context.Context, userID uuid.UUID) ([]domain.Tweet, error) {
+	tweets, err := s.userRepository.GetUserTimeline(ctx, userID)
 	if err != nil {
 		return nil, err
 	}

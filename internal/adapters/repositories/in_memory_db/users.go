@@ -1,6 +1,7 @@
-package repositories
+package in_memory_db
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
@@ -8,18 +9,8 @@ import (
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 )
 
-type InMemoryDB struct {
-	data map[string][]byte
-}
-
-func NewInMemoryDB() *InMemoryDB {
-	return &InMemoryDB{
-		data: make(map[string][]byte),
-	}
-}
-
-func (db *InMemoryDB) CreateUser(user domain.User) (domain.User, error) {
-	id := uuid.NewString()
+func (db *InMemoryDB) CreateUser(ctx context.Context, user domain.User) (domain.User, error) {
+	id := uuid.New()
 	user.ID = id
 
 	userBytes, err := json.Marshal(user)
@@ -34,7 +25,7 @@ func (db *InMemoryDB) CreateUser(user domain.User) (domain.User, error) {
 	return createdUser, err
 }
 
-func (db *InMemoryDB) GetUser(id string) (domain.User, error) {
+func (db *InMemoryDB) GetUser(ctx context.Context, id uuid.UUID) (domain.User, error) {
 	userBytes, ok := db.data[id]
 	if !ok {
 		return domain.User{}, fmt.Errorf("user with id %v not found", id)
@@ -49,13 +40,13 @@ func (db *InMemoryDB) GetUser(id string) (domain.User, error) {
 	return user, nil
 }
 
-func (db *InMemoryDB) FollowUser(userID string, followedID string) error {
-	user, err := db.GetUser(userID)
+func (db *InMemoryDB) FollowUser(ctx context.Context, userID uuid.UUID, followedID uuid.UUID) error {
+	user, err := db.GetUser(ctx, userID)
 	if err != nil {
 		return err
 	}
 
-	followedUser, err := db.GetUser(followedID)
+	followedUser, err := db.GetUser(ctx, followedID)
 	if err != nil {
 		return err
 	}
@@ -79,15 +70,15 @@ func (db *InMemoryDB) FollowUser(userID string, followedID string) error {
 	return nil
 }
 
-func (db *InMemoryDB) GetUserTimeline(userID string) ([]domain.Tweet, error) {
-	followedUsers, err := db.GetFollowedUsers(userID)
+func (db *InMemoryDB) GetUserTimeline(ctx context.Context, userID uuid.UUID) ([]domain.Tweet, error) {
+	followedUsers, err := db.GetFollowedUsers(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
 	var userTimeline []domain.Tweet
 	for _, followedID := range followedUsers {
-		user, err := db.GetUser(followedID)
+		user, err := db.GetUser(ctx, followedID)
 		if err != nil {
 			return nil, err
 		}
@@ -98,8 +89,8 @@ func (db *InMemoryDB) GetUserTimeline(userID string) ([]domain.Tweet, error) {
 	return userTimeline, nil
 }
 
-func (db *InMemoryDB) GetFollowedUsers(userID string) ([]string, error) {
-	user, err := db.GetUser(userID)
+func (db *InMemoryDB) GetFollowedUsers(ctx context.Context, userID uuid.UUID) ([]uuid.UUID, error) {
+	user, err := db.GetUser(ctx, userID)
 	if err != nil {
 		return nil, err
 	}

@@ -1,13 +1,14 @@
-package repositories
+package in_memory_db
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 )
 
-func (db *InMemoryDB) CreateTweet(tweet domain.Tweet) (domain.Tweet, error) {
+func (db *InMemoryDB) CreateTweet(ctx context.Context, tweet domain.Tweet) (domain.Tweet, error) {
 	userID := tweet.UserID
-	user, err := db.GetUser(userID)
+	user, err := db.GetUser(ctx, userID)
 	if err != nil {
 		return domain.Tweet{}, err
 	}

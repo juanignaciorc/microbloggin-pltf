@@ -1,7 +1,6 @@
 package services
 
 import (
-	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/ports"
 )
@@ -17,14 +16,10 @@ func NewTweetsService(tweetsRepository ports.TweetRepository) TweetsService {
 }
 
 func (s *TweetsService) CreateTweet(userID string, message string) (domain.Tweet, error) {
-	id := uuid.NewString()
-
 	tweet := domain.Tweet{
-		ID:      id,
-		UserID:  userID,
 		Message: message,
 	}
-	if _, err := s.tweetsRepository.CreateTweet(tweet); err != nil {
+	if _, err := s.tweetsRepository.CreateTweet(nil, tweet); err != nil {
 		return domain.Tweet{}, err
 	}
 
