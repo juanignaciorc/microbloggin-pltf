@@ -2,6 +2,7 @@ package ports
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
 )
 
@@ -10,5 +11,5 @@ type TweetRepository interface {
 }
 
 type TweetService interface {
-	CreateTweet(userID string, message string) (domain.Tweet, error)
+	CreateTweet(ctx context.Context, userID uuid.UUID, message string) (domain.Tweet, error)
 }
