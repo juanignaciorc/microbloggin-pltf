@@ -9,14 +9,14 @@ import (
 	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
 )
 
-const basePath = "/handlers/v1"
+const basePath = "/api/v1"
 
 func SetupEngine() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 
 	ctx := context.Background()
-	db, err := postgre_db.NewDB(ctx, "user=postgres password=postgres host=127.0.0.1 port=5432 dbname=Microblogging sslmode=prefer connect_timeout=10")
+	db, err := postgre_db.NewDB(ctx, "user=postgres password=postgres host=127.0.0.1 port=5432 dbname=Microblogging sslmode=prefer connect_timeout=5")
 	if err != nil {
 		fmt.Print("Error connecting to the database")
 		panic(err)
