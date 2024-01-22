@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
-	"github.com/juanignaciorc/microbloggin-pltf/internal/ports"
+	ports "github.com/juanignaciorc/microbloggin-pltf/internal/ports/repositories"
 )
 
 type UserService struct {
