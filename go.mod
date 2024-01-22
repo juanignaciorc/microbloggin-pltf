@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/jackc/pgx/v5 v5.5.1
+	go.uber.org/mock v0.4.0
 )
 
 require (
