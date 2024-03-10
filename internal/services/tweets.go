@@ -22,9 +22,10 @@ func (s *TweetsService) CreateTweet(ctx context.Context, userID uuid.UUID, messa
 		UserID:  userID,
 		Message: message,
 	}
-	if _, err := s.tweetsRepository.CreateTweet(ctx, tweet); err != nil {
+	tw, err := s.tweetsRepository.CreateTweet(ctx, tweet)
+	if err != nil {
 		return domain.Tweet{}, err
 	}
 
-	return tweet, nil
+	return tw, nil
 }
