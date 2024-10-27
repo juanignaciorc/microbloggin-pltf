@@ -1,6 +1,14 @@
 package in_memory_db
 
-import "github.com/google/uuid"
+import (
+	"context"
+	"github.com/google/uuid"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/domain"
+)
+
+type InMemoryDBTweetsInterface interface {
+	CreateTweet(ctx context.Context, tweet domain.Tweet) (domain.Tweet, error)
+}
 
 type InMemoryDB struct {
 	data map[uuid.UUID][]byte
