@@ -1,11 +1,9 @@
 package api
 
 import (
-	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/adapters/handlers"
-	"github.com/juanignaciorc/microbloggin-pltf/internal/adapters/repositories/postgre_db"
+	"github.com/juanignaciorc/microbloggin-pltf/internal/adapters/repositories/in_memory_db"
 	"github.com/juanignaciorc/microbloggin-pltf/internal/services"
 )
 
@@ -15,20 +13,13 @@ func SetupEngine() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 
-	ctx := context.Background()
-	db, err := postgre_db.NewDB(ctx, "user=postgres password=postgres host=127.0.0.1 port=5432 dbname=Microblogging sslmode=prefer connect_timeout=5")
-	if err != nil {
-		fmt.Print("Error connecting to the database")
-		panic(err)
-	}
+	repoIMDB := in_memory_db.NewInMemoryDB()
 
 	//Dependency Injection
-	userRepo := postgre_db.NewUserRepository(db)
-	userService := services.NewUserService(userRepo)
+	userService := services.NewUserService(repoIMDB)
 	userHandler := handlers.NewUserHandler(userService)
 
-	tweetRepo := postgre_db.NewTweetRepository(db)
-	tweetService := services.NewTweetsService(tweetRepo)
+	tweetService := services.NewTweetsService(repoIMDB)
 	tweetHandler := handlers.NewTweetHandler(tweetService)
 
 	router.GET("/ping", handlers.PingHandler)
