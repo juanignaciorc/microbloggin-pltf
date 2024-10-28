@@ -66,4 +66,5 @@ A continuación se detallan los endpoints disponibles para la interacción con l
 Para la estructura del proyecto utilicé arquitectura hexagonal.
 La aplicación posee los servicios básicos del back-end que le permitirian a un usuario publicar tweets, seguir a otros usuarios y ver el timeline de tweets.
 
-Para simplificar se implemento una data base in memory sin embargo en el documento de arquitectura general de una aplicación escalable se especifica el tipo de base de datos que usaria. 
+Para simplificar se implemento una data base in memory sin embargo en el documento de arquitectura general de una aplicación escalable se especifica el tipo de base de datos que usaria.
+Tambien se implemento una DB PostgreSQL aunque no quedo productiva ni finalizada.  
