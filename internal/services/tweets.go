@@ -7,15 +7,12 @@ import (
 	ports "github.com/juanignaciorc/microbloggin-pltf/internal/ports/repositories"
 )
 
-type TweetsService interface {
-	CreateTweet(ctx context.Context, userID uuid.UUID, message string) (domain.Tweet, error)
-}
 type tweetsServiceImpl struct {
 	tweetsRepository ports.TweetRepository
 }
 
 // NewTweetsService creates a new TweetService instance.
-func NewTweetsService(tweetsRepository ports.TweetRepository) TweetsService {
+func NewTweetsService(tweetsRepository ports.TweetRepository) TweetService {
 	return &tweetsServiceImpl{
 		tweetsRepository: tweetsRepository,
 	}

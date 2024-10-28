@@ -8,10 +8,10 @@ import (
 )
 
 type TweetHandler struct {
-	service services.TweetsService
+	service services.TweetService
 }
 
-func NewTweetHandler(service services.TweetsService) *TweetHandler {
+func NewTweetHandler(service services.TweetService) *TweetHandler {
 	return &TweetHandler{
 		service: service,
 	}

@@ -26,7 +26,7 @@ type CreateTweetBody struct {
 	Message string `json:"message" binding:"required,max=280"`
 }
 
-func (h *UserHandler) Create(ctx *gin.Context) {
+func (h UserHandler) Create(ctx *gin.Context) {
 	var body CreateUserBody
 	if err := ctx.ShouldBindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -42,7 +42,7 @@ func (h *UserHandler) Create(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User created successfully", "user": user})
 }
 
-func (h *UserHandler) Get(ctx *gin.Context) {
+func (h UserHandler) Get(ctx *gin.Context) {
 	userIDStr := ctx.Param("id")
 
 	userID, err := uuid.Parse(userIDStr)
@@ -60,7 +60,7 @@ func (h *UserHandler) Get(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-func (h *UserHandler) FollowUser(ctx *gin.Context) {
+func (h UserHandler) FollowUser(ctx *gin.Context) {
 	userIDStr := ctx.Param("id")
 
 	userID, err := uuid.Parse(userIDStr)
@@ -85,7 +85,7 @@ func (h *UserHandler) FollowUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User followed successfully"})
 }
 
-func (h *UserHandler) GetUserTimeline(ctx *gin.Context) {
+func (h UserHandler) GetUserTimeline(ctx *gin.Context) {
 	userIDStr := ctx.Param("id")
 
 	userID, err := uuid.Parse(userIDStr)
